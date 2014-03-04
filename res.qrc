@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/">
+        <file>map_pin.png</file>
+        <file>minimap.png</file>
+    </qresource>
+</RCC>
