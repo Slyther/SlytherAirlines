@@ -17,30 +17,32 @@ SOURCES += main.cpp\
         mainwindow.cpp \
     airport.cpp \
     map.cpp \
-    relation.cpp \
-    noded.cpp \
-    tdalista.cpp \
     mainmenu.cpp \
     airlinemanager.cpp \
     admincp.cpp \
-    logindg.cpp
+    logindg.cpp \
+    relationsmanager.cpp
 
 HEADERS  += mainwindow.h \
     airport.h \
     map.h \
-    relation.h \
-    noded.h \
-    tdalista.h \
     mainmenu.h \
     airlinemanager.h \
     admincp.h \
-    logindg.h
+    logindg.h \
+    edge.h \
+    node.h \
+    tdalista.h \
+    tdalistagrafo.h \
+    vertex.h \
+    relationsmanager.h
 
 FORMS    += mainwindow.ui \
     mainmenu.ui \
     airlinemanager.ui \
     admincp.ui \
-    logindg.ui
+    logindg.ui \
+    relationsmanager.ui
 
 RESOURCES += \
     res.qrc

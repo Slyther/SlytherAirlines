@@ -3,17 +3,18 @@
 #include <QLabel>
 #include <QMouseEvent>
 #include "airport.h"
-#include "relation.h"
-#include "tdalista.h"
+#include "tdalistagrafo.h"
 
+class MainWindow;
 class Map : public QLabel
 {
 public:
     Map(QWidget* parent);
     void mousePressEvent(QMouseEvent *ev);
     void resizeEvent(QResizeEvent *ev);
-    TDALISTA<Airport*>* airports;
+    TDALISTAGRAFO<Airport*>* airports;
     void paintEvent(QPaintEvent *ev);
+    MainWindow * mainwindow;
 };
 
 #endif // MAP_H
