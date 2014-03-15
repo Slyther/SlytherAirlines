@@ -19,7 +19,6 @@ SOURCES += main.cpp\
     map.cpp \
     mainmenu.cpp \
     airlinemanager.cpp \
-    admincp.cpp \
     logindg.cpp \
     relationsmanager.cpp \
     userairlineselect.cpp \
@@ -31,7 +30,6 @@ HEADERS  += mainwindow.h \
     map.h \
     mainmenu.h \
     airlinemanager.h \
-    admincp.h \
     logindg.h \
     edge.h \
     node.h \
