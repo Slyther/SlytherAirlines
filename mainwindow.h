@@ -10,6 +10,7 @@ namespace Ui {
 class MainWindow;
 }
 
+class AirlineManager;
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -21,8 +22,10 @@ public:
     void openXML(QString path);
     void saveXML(QString path);
     bool isEditting();
+    void show();
     bool changed, loaded;
     void closeEvent(QCloseEvent *event);
+    AirlineManager *parentManager;
     Airport * currentAirport;
     QSize previousSize;
     Map* map;

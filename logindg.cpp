@@ -9,7 +9,9 @@ LoginDg::LoginDg(QWidget *parent) :
 {
     ui->setupUi(this);
     ui->lineEdit_2->setEchoMode(QLineEdit::Password);
-    admincp = new AdminCP();
+    this->setWindowTitle("Administration Panel - Login");
+    this->setFixedSize(this->width(), this->height());
+    manager = new AirlineManager();
 }
 
 LoginDg::~LoginDg()
@@ -23,11 +25,12 @@ void LoginDg::on_buttonBox_accepted()
         this->parentMenu->close();
         ui->lineEdit->setText("");
         ui->lineEdit_2->setText("");
-        admincp->show();
+        manager->show();
+        manager->setWindowIcon(this->windowIcon());
+        manager->parentMenu = this->parentMenu;
         this->close();
     }else{
         QMessageBox *msg = new QMessageBox(QMessageBox::Information, "Incorrect username or password!", "Please check your login details and try again.", QMessageBox::Ok, this, Qt::Popup);
-        //msg->setWindowModality(Qt::NonModal);
         msg->setDefaultButton(QMessageBox::Ok);
         msg->exec();
     }
@@ -38,4 +41,10 @@ void LoginDg::on_buttonBox_rejected()
     ui->lineEdit->setText("");
     ui->lineEdit_2->setText("");
     this->close();
+}
+
+void LoginDg::show()
+{
+    QMainWindow::show();
+    this->setWindowIcon(this->parentMenu->windowIcon());
 }

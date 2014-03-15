@@ -6,6 +6,9 @@ MainMenu::MainMenu(QWidget *parent) :
     ui(new Ui::MainMenu)
 {
     ui->setupUi(this);
+    this->setWindowIcon(QIcon(":/programicon.png"));
+    setFixedSize(this->width(), this->height());
+    this->setWindowTitle("Slyther's Airlines");
 }
 
 MainMenu::~MainMenu()
@@ -18,4 +21,11 @@ void MainMenu::on_AdminButton_clicked()
     LoginDg * dial = new LoginDg();
     dial->parentMenu = this;
     dial->show();
+}
+
+void MainMenu::on_UserButton_clicked()
+{
+    UserAirlineSelect * uas = new UserAirlineSelect();
+    uas->parentMenu = this;
+    uas->show();
 }

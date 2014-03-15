@@ -2,7 +2,7 @@
 #define LOGINDG_H
 
 #include <QMainWindow>
-#include "admincp.h"
+#include "airlinemanager.h"
 class MainMenu;
 namespace Ui {
 class LoginDg;
@@ -16,7 +16,8 @@ public:
     explicit LoginDg(QWidget *parent = 0);
     ~LoginDg();
     MainMenu *parentMenu;
-    AdminCP *admincp;
+    AirlineManager *manager;
+    void show();
 
 private slots:
     void on_buttonBox_accepted();

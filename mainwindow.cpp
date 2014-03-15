@@ -4,6 +4,7 @@
 #include <QtXml>
 #include <QPaintEngine>
 #include <QMessageBox>
+#include "airlinemanager.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -34,8 +35,13 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->EditRelationsOk->setEnabled(false);
     ui->RemovePortOk->setEnabled(false);
     ui->AirportsBox->addItem("");
+}
+
+void MainWindow::show()
+{
     openXML(XMLPath);
     loaded = true;
+    QMainWindow::show();
 }
 
 MainWindow::~MainWindow()
@@ -371,11 +377,15 @@ void MainWindow::closeEvent(QCloseEvent *event)
         msg->setWindowModality(Qt::NonModal);
         msg->setDefaultButton(QMessageBox::Yes);
         int reply = msg->exec();
-        if(reply == QMessageBox::Cancel)
+        if(reply == QMessageBox::Cancel){
             event->ignore();
+            return;
+        }
         else if(reply == QMessageBox::Yes)
             saveXML(XMLPath);
     }
+    parentManager->show();
+    this->deleteLater();
 }
 
 void MainWindow::openXML(QString path)
@@ -466,18 +476,5 @@ void MainWindow::saveXML(QString path)
 
 void MainWindow::on_actionBack_to_Airlines_triggered()
 {
-    if(changed){
-        QMessageBox *msg = new QMessageBox(QMessageBox::Question, "Save Changes?", "Would you like to save the changes made to the Airline's Database?", QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel, this, Qt::Popup);
-        msg->setWindowModality(Qt::NonModal);
-        msg->setDefaultButton(QMessageBox::Yes);
-        int reply = msg->exec();
-        if(reply == QMessageBox::Cancel)
-            return;
-        else if(reply == QMessageBox::Yes)
-            saveXML(XMLPath);
-        changed = false;
-        //go back to airlines selection code here
-    }else{
-        //go back to airlines selection code here
-    }
+    close();
 }

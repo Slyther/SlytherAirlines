@@ -103,8 +103,8 @@ void RelationsManager::on_RemoveOk_clicked()
         }
     }
     ui->AirportsList->insertRow(ui->AirportsList->rowCount());
-    ui->AirportsList->setItem(ui->AirportsList->rowCount()-1, 0, new QTableWidgetItem(ui->AirportsList->selectedItems().at(0)->text()));
-    ui->AirportsList->setItem(ui->AirportsList->rowCount()-1, 1, new QTableWidgetItem(ui->AirportsList->selectedItems().at(1)->text()));
+    ui->AirportsList->setItem(ui->AirportsList->rowCount()-1, 0, new QTableWidgetItem(ui->RelationsList->selectedItems().at(0)->text()));
+    ui->AirportsList->setItem(ui->AirportsList->rowCount()-1, 1, new QTableWidgetItem(ui->RelationsList->selectedItems().at(1)->text()));
     ui->RelationsList->removeRow(ui->RelationsList->currentRow());
     ui->RelationsList->selectRow(0);
     updateSizes();

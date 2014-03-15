@@ -145,8 +145,14 @@ public:
     //if list->size() == 0, no path was available
     TDALISTA<N> * path(int indexOfFrom, int indexOfTo)
     {
-        if(indexOfFrom == indexOfTo)
+        if(indexOfFrom == indexOfTo && !isAdjacent(indexOfFrom, indexOfTo))
             return new TDALISTA<N>();
+        else if(indexOfFrom == indexOfTo && isAdjacent(indexOfFrom, indexOfTo)){
+            TDALISTA<N>* toret = new TDALISTA<N>();
+            toret->add(get(indexOfFrom));
+            toret->add(get(indexOfTo));
+            return toret;
+        }
         Vertex<N>* curr = beginning;
         for(int i = 0; i < indexOfFrom; i++, curr = curr->next);
         if(curr->relations->size() == 0)

@@ -3,5 +3,7 @@
         <file>map_pin.png</file>
         <file>minimap.png</file>
         <file>map_pin2.png</file>
+        <file>programicon.png</file>
+        <file>map_pin3.png</file>
     </qresource>
 </RCC>

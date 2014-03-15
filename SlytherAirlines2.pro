@@ -21,7 +21,10 @@ SOURCES += main.cpp\
     airlinemanager.cpp \
     admincp.cpp \
     logindg.cpp \
-    relationsmanager.cpp
+    relationsmanager.cpp \
+    userairlineselect.cpp \
+    ticketpurchasewindow.cpp \
+    usermap.cpp
 
 HEADERS  += mainwindow.h \
     airport.h \
@@ -35,14 +38,19 @@ HEADERS  += mainwindow.h \
     tdalista.h \
     tdalistagrafo.h \
     vertex.h \
-    relationsmanager.h
+    relationsmanager.h \
+    userairlineselect.h \
+    ticketpurchasewindow.h \
+    usermap.h
 
 FORMS    += mainwindow.ui \
     mainmenu.ui \
     airlinemanager.ui \
     admincp.ui \
     logindg.ui \
-    relationsmanager.ui
+    relationsmanager.ui \
+    userairlineselect.ui \
+    ticketpurchasewindow.ui
 
 RESOURCES += \
     res.qrc

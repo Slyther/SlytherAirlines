@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include "logindg.h"
+#include "userairlineselect.h"
 namespace Ui {
 class MainMenu;
 }
@@ -17,6 +18,8 @@ public:
 
 private slots:
     void on_AdminButton_clicked();
+
+    void on_UserButton_clicked();
 
 private:
     Ui::MainMenu *ui;
