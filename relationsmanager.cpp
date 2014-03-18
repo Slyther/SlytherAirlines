@@ -1,6 +1,7 @@
 #include "relationsmanager.h"
 #include "ui_relationsmanager.h"
 #include "mainwindow.h"
+#include <QMessageBox>
 
 RelationsManager::RelationsManager(QWidget *parent) :
     QMainWindow(parent),
@@ -76,6 +77,14 @@ void RelationsManager::on_AddOk_clicked()
 {
     if(ui->AirportsList->selectedItems().count() == 0)
         return;
+    QRegExp re("\\d*");
+    if(!re.exactMatch(ui->lineEdit->text())){
+        QMessageBox *msg = new QMessageBox(QMessageBox::Information, "Invalid Information!", "Price needs to be a valid number.", QMessageBox::Ok, this, Qt::Popup);
+        msg->setWindowModality(Qt::NonModal);
+        msg->setDefaultButton(QMessageBox::Ok);
+        msg->exec();
+        return;
+    }
     for(int i = 0; i < mainwindow->map->airports->size(); i++){
         if(mainwindow->map->airports->get(i)->code == ui->AirportsList->selectedItems().at(1)->text()){
             mainwindow->map->airports->addEdge(indexOfCurrent, i, ui->lineEdit->text().toInt());
