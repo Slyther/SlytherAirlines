@@ -8,9 +8,9 @@ class TDALISTA
 public:
     TDALISTA()
     {
-        length=0;
-        beginning=0;
-        ending=beginning;
+        length = 0;
+        beginning = 0;
+        ending = beginning;
         current = beginning;
     }
 
@@ -39,38 +39,26 @@ public:
         return N();
     }
 
-    N next(int pos)
+    N next()
     {
-        if(pos >= length-1 || pos < 0)
+        if(current == 0)
             return N();
-        int posit = 0;
-        Node<N>* pointer = beginning;
-        while(posit < pos)
-        {
-            pointer = pointer->next;
-            posit++;
-        }
-        pointer = pointer->next;
-        current = pointer;
-        return pointer->element;
+        if(current->next == 0)
+            return N();
+        return current->next;
     }
 
     N get(int pos)
     {
-        if(pos>=length || pos<0)
+        if(pos>=this->length || pos<0)
             return N();
-        int posit = 0;
-        Node<N>* pointer = beginning;
-        while(posit < pos)
-        {
-            pointer = pointer->next;
-            posit++;
-        }
-        current = pointer;
+        Node<N>* pointer = this->beginning;
+        for(int i = 0; i < pos; i++, pointer = pointer->next);
+        this->current = pointer;
         return pointer->element;
     }
 
-    int add(N elem)
+    void add(N elem)
     {
         if(size() != 0)
         {
@@ -85,7 +73,6 @@ public:
             current = beginning;
             length++;
         }
-        return 0;
     }
 
     int remove(int pos)
@@ -143,30 +130,25 @@ public:
         return 0;
     }
 
-    int empty()
+    void empty()
     {
-        Node<N>* tmp = beginning;
-        beginning = 0;
-        ending = 0;
-        current = 0;
-        length = 0;
-        return empty(&tmp);
+        for(int i = size()-1; i >= 0; i--){
+            remove(i);
+        }
     }
 
-    int empty(Node<N> **temp)
+    int indexOf(N elem)
     {
-        if(*temp == 0)
-            return -1;
-        Node<N>* tmp = (*temp)->next;
-        delete *temp;
-        if(tmp == 0)
-            return 0;
-        return empty(&tmp);
+        for(int i = 0; i < this->length; i++){
+            if(elem == this->get(i))
+                return i;
+        }
+        return -1;
     }
 
     bool hasnext()
     {
-        return current->next != 0;
+        return this->current->next != 0;
     }
 
 private:

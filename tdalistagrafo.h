@@ -11,9 +11,9 @@ public:
     TDALISTAGRAFO()
     {
         this->length = 0;
-        this->lastPathWeight = 0;
-        this->lastIndexOfFrom = 0;
-        this->lastIndexOfTo = 0;
+        this->lastPathWeight = -1;
+        this->lastIndexOfFrom = -1;
+        this->lastIndexOfTo = -1;
         this->beginning = 0;
         this->ending = this->beginning;
         this->current = this->beginning;
@@ -48,18 +48,13 @@ public:
     {
         if(pos>=this->length || pos<0)
             return N();
-        int posit = 0;
         Vertex<N>* pointer = this->beginning;
-        while(posit < pos)
-        {
-            pointer = pointer->next;
-            posit++;
-        }
+        for(int i = 0; i < pos; i++, pointer = pointer->next);
         this->current = pointer;
         return pointer->element;
     }
 
-    int add(N elem)
+    void add(N elem)
     {
         if(this->size() != 0)
         {
@@ -74,37 +69,28 @@ public:
             this->current = this->beginning;
             this->length++;
         }
-        return 0;
     }
 
     int addEdge(int indexOfFrom, int indexOfTo, int value)
     {
-        N from = this->get(indexOfFrom);
-        N to = this->get(indexOfTo);
-        if(from == N() || to == N())
+        if(indexOfFrom >= size() || indexOfTo >= size() || indexOfFrom < 0 || indexOfTo < 0)
             return -1;
         Vertex<N>* VFrom = this->beginning;
-        Vertex<N>* VTo = this->beginning;
         for(int i = 0; i < indexOfFrom; i++, VFrom = VFrom->next);
-        for(int i = 0; i < indexOfTo; i++, VTo = VTo->next);
-        VFrom->relations->add(new Edge<N>(VFrom->element, VTo->element, value));
+        VFrom->relations->add(new Edge<N>(VFrom->element, get(indexOfTo), value));
         return 0;
     }
 
     int removeEdge(int indexOfFrom, int indexOfTo)
     {
-        N from = this->get(indexOfFrom);
-        N to = this->get(indexOfTo);
-        if(from == N() || to == N())
-            return -1;
-        Vertex<N>* VFrom = this->beginning;
-        Vertex<N>* VTo = this->beginning;
-        for(int i = 0; i < indexOfFrom; i++, VFrom = VFrom->next);
-        for(int i = 0; i < indexOfTo; i++, VTo = VTo->next);
-        for(int i = 0; i < VFrom->relations->size(); i++){
-            if(VFrom->relations->get(i)->to == VTo->element){
-                VFrom->relations->remove(i);
-                return 0;
+        if(isAdjacent(indexOfFrom, indexOfTo)){
+            Vertex<N>* VFrom = this->beginning;
+            for(int i = 0; i < indexOfFrom; i++, VFrom = VFrom->next);
+            for(int i = 0; i < VFrom->relations->size(); i++){
+                if(VFrom->relations->get(i)->to == get(indexOfTo)){
+                    VFrom->relations->remove(i);
+                    return 0;
+                }
             }
         }
         return -1;
@@ -112,17 +98,13 @@ public:
 
     bool isAdjacent(int indexOfFrom, int indexOfTo)
     {
-        N from = this->get(indexOfFrom);
-        N to = this->get(indexOfTo);
-        if(from == N() || to == N())
-            return false;
-        Vertex<N>* VFrom = this->beginning;
-        Vertex<N>* VTo = this->beginning;
-        for(int i = 0; i < indexOfFrom; i++, VFrom = VFrom->next);
-        for(int i = 0; i < indexOfTo; i++, VTo = VTo->next);
-        for(int i = 0; i < VFrom->relations->size(); i++){
-            if(VFrom->relations->get(i)->to == VTo->element)
-                return true;
+        if(indexOfFrom < size() && indexOfTo < size() && indexOfFrom >= 0 && indexOfTo >= 0){
+            Vertex<N>* VFrom = this->beginning;
+            for(int i = 0; i < indexOfFrom; i++, VFrom = VFrom->next);
+            for(int i = 0; i < VFrom->relations->size(); i++){
+                if(VFrom->relations->get(i)->to == get(indexOfTo))
+                    return true;
+            }
         }
         return false;
     }
@@ -131,11 +113,9 @@ public:
     {
         if(isAdjacent(indexOfFrom, indexOfTo)){
             Vertex<N>* VFrom = this->beginning;
-            Vertex<N>* VTo = this->beginning;
             for(int i = 0; i < indexOfFrom; i++, VFrom = VFrom->next);
-            for(int i = 0; i < indexOfTo; i++, VTo = VTo->next);
             for(int i = 0; i < VFrom->relations->size(); i++){
-                if(VFrom->relations->get(i)->to == VTo->element)
+                if(VFrom->relations->get(i)->to == get(indexOfTo))
                     return VFrom->relations->get(i)->value;
             }
         }
@@ -149,8 +129,6 @@ public:
             return new TDALISTA<N>();
         Vertex<N>* curr = beginning;
         for(int i = 0; i < indexOfFrom; i++, curr = curr->next);
-        if(curr->relations->size() == 0)
-            return new TDALISTA<N>();
         TDALISTA< TDALISTA< Edge<N>* >* > *toHandle = new TDALISTA< TDALISTA< Edge<N>* >* >();
         TDALISTA< Edge<N>* >* workingPath = new TDALISTA<Edge<N>* >();
         for(int i = 0; i < curr->relations->size(); i++){
@@ -167,13 +145,17 @@ public:
                 n2 = i;
             }
         }
-        if(n2 == -1)
-            return new TDALISTA<N>();
         TDALISTA<N>* toReturn = new TDALISTA<N>();
-        toReturn->add(toHandle->get(n2)->get(0)->from);
-        for(int i = 0; i < toHandle->get(n2)->size(); i++){
-            toReturn->add(toHandle->get(n2)->get(i)->to);
+        if(n2 != -1){
+            toReturn->add(toHandle->get(n2)->get(0)->from);
+            for(int i = 0; i < toHandle->get(n2)->size(); i++){
+                toReturn->add(toHandle->get(n2)->get(i)->to);
+            }
         }
+        workingPath->empty();
+        toHandle->empty();
+        delete toHandle;
+        delete workingPath;
         this->lastIndexOfFrom = indexOfFrom;
         this->lastIndexOfTo = indexOfTo;
         this->lastPathWeight = n1;
@@ -185,17 +167,15 @@ public:
     {
         if(indexOfFrom == this->lastIndexOfFrom && indexOfTo == this->lastIndexOfTo){
             int toReturn = this->lastPathWeight;
-            this->lastPathWeight = 0;
-            this->lastIndexOfFrom = 0;
-            this->lastIndexOfTo = 0;
+            this->lastPathWeight = -1;
+            this->lastIndexOfFrom = -1;
+            this->lastIndexOfTo = -1;
             return toReturn;
         }
         if(isAdjacent(indexOfFrom, indexOfTo))
             return adjacencyValue(indexOfFrom, indexOfTo);
         Vertex<N>* curr = beginning;
         for(int i = 0; i < indexOfFrom; i++, curr = curr->next);
-        if(curr->relations->size() == 0)
-            return -1;
         TDALISTA< TDALISTA< Edge<N>* >* > *toHandle = new TDALISTA< TDALISTA< Edge<N>* >* >();
         TDALISTA< Edge<N>* >* workingPath = new TDALISTA<Edge<N>* >();
         for(int i = 0; i < curr->relations->size(); i++){
@@ -212,6 +192,10 @@ public:
                 n2 = i;
             }
         }
+        workingPath->empty();
+        toHandle->empty();
+        delete toHandle;
+        delete workingPath;
         if(n2 == -1)
             return n2;
         return n1;
@@ -262,34 +246,18 @@ public:
         return 0;
     }
 
-    int empty()
+    void empty()
     {
-        Vertex<N>* tmp = this->beginning;
-        this->beginning = 0;
-        this->ending = 0;
-        this->current = 0;
-        this->length = 0;
-        return this->empty(&tmp);
-    }
-
-    int empty(Vertex<N> **temp)
-    {
-        if(*temp == 0)
-            return -1;
-        Vertex<N>* tmp = (*temp)->next;
-        delete *temp;
-        if(tmp == 0)
-            return 0;
-        return this->empty(&tmp);
+        for(int i = size()-1; i >= 0; i--){
+            remove(i);
+        }
     }
 
     int indexOf(N elem)
     {
-        int n = -1;
         for(int i = 0; i < this->length; i++){
-            n = i;
             if(elem == this->get(i))
-                return n;
+                return i;
         }
         return -1;
     }
@@ -318,14 +286,11 @@ private:
         }
         Vertex<N>* curr = beginning;
         for(int i = 0; i < indexOf(current->to); i++, curr = curr->next);
-        if(curr->relations->size() == 0){
-            newPath->empty();
-            delete newPath;
-            return;
-        }
         for(int i = 0; i < curr->relations->size(); i++){
             buildPaths(newPath, toHandle, curr->relations->get(i), indexOfTo);
         }
+        newPath->empty();
+        delete newPath;
     }
 
     int length, lastPathWeight, lastIndexOfFrom, lastIndexOfTo;
