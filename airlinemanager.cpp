@@ -22,6 +22,7 @@ void AirlineManager::closeEvent(QCloseEvent *ev)
 {
     saveXML(dbXMLPath);
     parentMenu->show();
+    deleteLater();
 }
 
 void AirlineManager::resizeEvent(QResizeEvent *ev)
@@ -99,9 +100,7 @@ void AirlineManager::on_removeAirline_clicked()
     }
     if(n == -1)
         return;
-    QFile f(airlines->get(n)->get(0));
-    f.open(QIODevice::ReadWrite | QIODevice::Text);
-    if(!f.remove()){
+    if(!QFile::remove(airlines->get(n)->get(1))){
         QMessageBox *msg = new QMessageBox(QMessageBox::Information, "Error!", "There was an unknown error while deleting the database file.", QMessageBox::Ok, this, Qt::Popup);
         msg->setWindowModality(Qt::NonModal);
         msg->setDefaultButton(QMessageBox::Ok);

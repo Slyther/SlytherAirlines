@@ -3,6 +3,7 @@
 #include "vertex.h"
 #include "edge.h"
 #include "tdalista.h"
+#include <QDebug>
 
 template<typename N>
 class TDALISTAGRAFO
@@ -88,7 +89,9 @@ public:
             for(int i = 0; i < indexOfFrom; i++, VFrom = VFrom->next);
             for(int i = 0; i < VFrom->relations->size(); i++){
                 if(VFrom->relations->get(i)->to == get(indexOfTo)){
+                    Edge<N>* toDelete = VFrom->relations->get(i);
                     VFrom->relations->remove(i);
+                    delete toDelete;
                     return 0;
                 }
             }

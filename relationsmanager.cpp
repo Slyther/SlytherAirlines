@@ -2,6 +2,7 @@
 #include "ui_relationsmanager.h"
 #include "mainwindow.h"
 #include <QMessageBox>
+#include <QDebug>
 
 RelationsManager::RelationsManager(QWidget *parent) :
     QMainWindow(parent),
@@ -28,6 +29,12 @@ RelationsManager::~RelationsManager()
 
 void RelationsManager::loadLists()
 {
+    for(int i = ui->RelationsList->rowCount() -1; i >= 0; i--){
+        ui->RelationsList->removeRow(i);
+    }
+    for(int i = ui->AirportsList->rowCount() -1; i >= 0; i--){
+        ui->AirportsList->removeRow(i);
+    }
     this->setWindowTitle(QString("Relations Manager for %1 Airport").arg(mainwindow->map->airports->get(indexOfCurrent)->name));
     for(int i = 0; i < mainwindow->map->airports->size(); i++){
         if(i == indexOfCurrent)
@@ -91,14 +98,17 @@ void RelationsManager::on_AddOk_clicked()
             break;
         }
     }
-    ui->RelationsList->insertRow(ui->RelationsList->rowCount());
-    ui->RelationsList->setItem(ui->RelationsList->rowCount()-1, 0, new QTableWidgetItem(ui->AirportsList->selectedItems().at(0)->text()));
-    ui->RelationsList->setItem(ui->RelationsList->rowCount()-1, 1, new QTableWidgetItem(ui->AirportsList->selectedItems().at(1)->text()));
-    ui->RelationsList->setItem(ui->RelationsList->rowCount()-1, 2, new QTableWidgetItem(ui->lineEdit->text()));
-    ui->AirportsList->removeRow(ui->AirportsList->currentRow());
-    ui->AirportsList->selectRow(0);
-    updateSizes();
+    loadLists();
     changed = true;
+    return;
+//    ui->RelationsList->insertRow(ui->RelationsList->rowCount());
+//    ui->RelationsList->setItem(ui->RelationsList->rowCount()-1, 0, new QTableWidgetItem(ui->AirportsList->selectedItems().at(0)->text()));
+//    ui->RelationsList->setItem(ui->RelationsList->rowCount()-1, 1, new QTableWidgetItem(ui->AirportsList->selectedItems().at(1)->text()));
+//    ui->RelationsList->setItem(ui->RelationsList->rowCount()-1, 2, new QTableWidgetItem(ui->lineEdit->text()));
+//    ui->AirportsList->removeRow(ui->AirportsList->currentRow());
+//    ui->AirportsList->selectRow(0);
+//    updateSizes();
+//    changed = true;
 }
 
 void RelationsManager::on_RemoveOk_clicked()
@@ -111,13 +121,16 @@ void RelationsManager::on_RemoveOk_clicked()
             break;
         }
     }
-    ui->AirportsList->insertRow(ui->AirportsList->rowCount());
-    ui->AirportsList->setItem(ui->AirportsList->rowCount()-1, 0, new QTableWidgetItem(ui->RelationsList->selectedItems().at(0)->text()));
-    ui->AirportsList->setItem(ui->AirportsList->rowCount()-1, 1, new QTableWidgetItem(ui->RelationsList->selectedItems().at(1)->text()));
-    ui->RelationsList->removeRow(ui->RelationsList->currentRow());
-    ui->RelationsList->selectRow(0);
-    updateSizes();
+    loadLists();
     changed = true;
+    return;
+//    ui->AirportsList->insertRow(ui->AirportsList->rowCount());
+//    ui->AirportsList->setItem(ui->AirportsList->rowCount()-1, 0, new QTableWidgetItem(ui->RelationsList->selectedItems().at(0)->text()));
+//    ui->AirportsList->setItem(ui->AirportsList->rowCount()-1, 1, new QTableWidgetItem(ui->RelationsList->selectedItems().at(1)->text()));
+//    ui->RelationsList->removeRow(ui->RelationsList->currentRow());
+//    ui->RelationsList->selectRow(0);
+//    updateSizes();
+//    changed = true;
 }
 
 void RelationsManager::on_AirportsList_clicked(const QModelIndex &index)
