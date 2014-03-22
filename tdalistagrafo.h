@@ -208,8 +208,7 @@ public:
     {
         if(pos>=this->length || pos<0)
             return -1;
-        int posit = 0;
-        if(posit == pos){
+        if(pos == 0){
             Vertex<N>* todelete = this->beginning;
             Vertex<N>* tmp = this->beginning;
             while(tmp->next != 0){
@@ -222,16 +221,14 @@ public:
             this->beginning = this->beginning->next;
             if(this->current == todelete)
                 this->current = this->beginning;
+            if(this->ending == todelete)
+                this->ending = this->beginning;
             delete todelete;
             this->length--;
             return 0;
         }
         Vertex<N>* pointer = this->beginning;
-        while(posit < pos-1)
-        {
-            pointer = pointer->next;
-            posit++;
-        }
+        for(int i = 0; i < pos-1; i++, pointer = pointer->next);
         Vertex<N>* todelete = pointer->next;
         Vertex<N>* tmp = this->beginning;
         while(tmp->next != 0){
@@ -242,8 +239,10 @@ public:
             tmp = tmp->next;
         }
         pointer->next = todelete->next;
-        if(this->current == todelete)
-            this->current = this->beginning;
+        if(ending == todelete)
+            ending = pointer;
+        if(current == todelete)
+            current = ending;
         this->length--;
         delete todelete;
         return 0;

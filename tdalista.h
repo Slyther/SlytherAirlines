@@ -65,40 +65,37 @@ public:
             ending->next = new Node<N>(elem);
             ending = ending->next;
             current = ending;
-            length++;
         }else{
-            Node<N>* newElement = new Node<N>(elem);
-            beginning = newElement;
+            beginning = new Node<N>(elem);
             ending = beginning;
             current = beginning;
-            length++;
         }
+        length++;
     }
 
     int remove(int pos)
     {
         if(pos>=length || pos<0)
             return -1;
-        int posit = 0;
-        if(posit == pos){
+        if(pos == 0){
             Node<N>* todelete = beginning;
             beginning = beginning->next;
             if(current == todelete)
                 current = beginning;
+            if(this->ending == todelete)
+                this->ending = this->beginning;
             delete todelete;
             length--;
             return 0;
         }
         Node<N>* pointer = beginning;
-        while(posit < pos-1)
-        {
-            pointer = pointer->next;
-            posit++;
-        }
+        for(int i = 0; i < pos-1; i++, pointer = pointer->next);
         Node<N>* todelete = pointer->next;
         pointer->next = todelete->next;
+        if(ending == todelete)
+            ending = pointer;
         if(current == todelete)
-            current = beginning;
+            current = ending;
         length--;
         delete todelete;
         return 0;
